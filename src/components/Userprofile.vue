@@ -3,17 +3,20 @@
     <div class="user-profile_user-panel">
       <h1 class="user-profile_username">
         @{{ user.username }} - {{ fullName }}
-        <!--             <button @click="followUser">
-                Follow
-                </button> -->
       </h1>
       <div class="user-profil_admin-badge" v-if="user.isAdmin">Admin</div>
       <div class="user-profile_follower-count">
         <strong>Followers: </strong> {{ followers }}
       </div>
-      <form class="user-profile_create-twoot" @submit.prevent="createNewTwoot">
-        <label for="newTwoot"><strong>New Twoot</strong></label>
-        <textarea name="" id="newTwoot" cols="30" rows="4" v-model="newTwootContent"></textarea>
+      <form class="user-profile_create-twoot" @submit.prevent="createNewTwoot" :class="{ '--exceeded': newTwootCharacterCount > 180 }">
+        <label for="newTwoot"><strong>New Twoot</strong> ({{ newTwootCharacterCount }}/180)</label>
+        <textarea
+          name=""
+          id="newTwoot"
+          cols="30"
+          rows="4"
+          v-model="newTwootContent"
+        ></textarea>
 
         <div class="user-profile_create-twoot-type">
           <label for="newTwootType"><strong>Type: </strong></label>
@@ -27,9 +30,7 @@
             </option>
           </select>
         </div>
-        <button>
-            Twoot !
-        </button>
+        <button>Twoot !</button>
       </form>
     </div>
     <div class="user-profile_twoots-wrapper">
@@ -90,6 +91,9 @@ export default {
     fullName() {
       return `${this.user.firstname} ${this.user.lastname}`;
     },
+    newTwootCharacterCount() {
+        return this.newTwootContent.length;
+    }
   },
   methods: {
     followUser() {
@@ -99,14 +103,14 @@ export default {
       console.log(`Favourited Twoot ${id}`);
     },
     createNewTwoot() {
-        if(this.newTwootContent && this.selectedTwootType !== 'draft') {
-            this.user.twoots.unshift({
-                id: this.user.twoots.length + 1,
-                content: this.newTwootContent
-            })
-        }
-        this.newTwootContent = '';
-    }
+      if (this.newTwootContent && this.selectedTwootType !== "draft") {
+        this.user.twoots.unshift({
+          id: this.user.twoots.length + 1,
+          content: this.newTwootContent,
+        });
+      }
+      this.newTwootContent = "";
+    },
   },
   mounted() {
     this.followUser();
@@ -114,46 +118,57 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .user-profile {
   display: grid;
   grid-template-columns: 1fr 3fr;
   width: 100%;
   padding: 50px 5%;
-}
 
-.user-profile_user-panel {
-  display: flex;
-  flex-direction: column;
-  margin-right: 50px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 5px;
-  border: 1px solid #dfe3e8;
-}
+  .user-profile_user-panel {
+    display: flex;
+    flex-direction: column;
+    margin-right: 50px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #dfe3e8;
 
-.user-profil_admin-badge {
-  background: purple;
-  color: white;
-  border-radius: 5px;
-  margin-right: auto;
-  padding: 0 10px;
-  font-weight: bold;
-}
+    h1 {
+      margin: 0;
+    }
 
-h1 {
-  margin: 0;
-}
+    .user-profil_admin-badge {
+      background: rebeccapurple;
+      color: white;
+      border-radius: 5px;
+      margin-right: auto;
+      padding: 0 10px;
+      font-weight: bold;
+    }
 
-.user-profile_twoots-wrapper {
-  display: grid;
-  grid-gap: 10px;
-}
+    .user-profile_create-twoot {
+      border-top: 1px solid #dfe3e8;
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
 
-.user-profile_create-twoot {
-  border-top: 1px solid #dfe3e8;
-  padding-top: 20px;
-  display: flex;
-  flex-direction: column;
+      &.--exceeded {
+          color: red;
+          border-color: red;
+
+          button {
+              background-color: red;
+              border: none;
+              color: white;
+          }
+      }
+    }
+  }
+
+  .user-profile_twoots-wrapper {
+    display: grid;
+    grid-gap: 10px;
+  }
 }
 </style>
