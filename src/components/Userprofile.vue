@@ -1,20 +1,18 @@
 <template>
   <div class="user-profile">
     <div class="user-profile_user-panel">
-      <h1 class="user-profile_username">
-        @{{ user.username }}
-      </h1>
-      <div class="user-profil_admin-badge" v-if="user.isAdmin">Admin</div>
+      <h1 class="user-profile_username">@{{ state.user.username }}</h1>
+      <div class="user-profil_admin-badge" v-if="state.user.isAdmin">Admin</div>
       <div class="user-profile_follower-count">
-        <strong>Followers: </strong> {{ followers }}
+        <strong>Followers: </strong> {{ state.followers }}
       </div>
-      <CreateTwootPanel @add-twoot="addTwoot"/>
+      <CreateTwootPanel @add-twoot="addTwoot" />
     </div>
     <div class="user-profile_twoots-wrapper">
       <TwootItem
-        v-for="twoot in user.twoots"
+        v-for="twoot in state.user.twoots"
         :key="twoot.id"
-        :username="user.username"
+        :username="state.user.username"
         :twoot="twoot"
       />
     </div>
@@ -22,14 +20,16 @@
 </template>
 
 <script>
+import { reactive } from "vue";
+
 import TwootItem from "./TwootItem";
 import CreateTwootPanel from "./CreateTwootPanel";
 
 export default {
   name: "UserProfile",
   components: { TwootItem, CreateTwootPanel },
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       followers: 0,
       user: {
         id: 1,
@@ -39,17 +39,25 @@ export default {
         email: "kiki@free.fr",
         isAdmin: true,
         twoots: [
-          { id: 1, content: "twotter is amazing"},
-          { id: 2, content: "Don't forget to subscribe"},
+          { id: 1, content: "twotter is amazing" },
+          { id: 2, content: "Don't forget to subscribe" },
         ],
       },
+    });
+
+    function addTwoot(twoot) {
+      state.user.twoots.unshift({
+        id: state.user.twoots.length + 1,
+        content: twoot,
+      });
+    }
+
+    return {
+      state,
+      addTwoot
     };
-  },
-  methods: {
-    addTwoot(twoot) {
-      this.user.twoots.unshift({ id: this.user.twoots.length + 1, content: twoot})
-    },
-  },
+
+  }
 };
 </script>
 
@@ -89,14 +97,14 @@ export default {
       flex-direction: column;
 
       &.--exceeded {
-          color: red;
-          border-color: red;
+        color: red;
+        border-color: red;
 
-          button {
-              background-color: red;
-              border: none;
-              color: white;
-          }
+        button {
+          background-color: red;
+          border: none;
+          color: white;
+        }
       }
     }
   }

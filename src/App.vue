@@ -1,29 +1,34 @@
 <template>
   <div id="app">
     <nav>
-      <div class="navigation_logo">
-        Twotter
-      </div>
+      <div class="navigation_logo">Twotter</div>
       <div class="navigation_user">
         {{ user.username }}
       </div>
     </nav>
-    <UserProfile/>
+    <UserProfile />
   </div>
 </template>
 
 <script>
+import { reactive, computed } from "vue";
+
 import UserProfile from './components/Userprofile'
 
 export default {
   name: "App",
   components: { UserProfile },
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       user: {
         username: '_titiToto'
       }
+    })
+
+    return {
+      state
     }
+
   }
 };
 </script>

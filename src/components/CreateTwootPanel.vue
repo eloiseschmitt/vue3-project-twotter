@@ -7,15 +7,15 @@
     <label for="newTwoot"
       ><strong>New Twoot</strong> ({{ newTwootCharacterCount }}/180)</label
     >
-    <textarea id="newTwoot" rows="4" v-model="newTwootContent"></textarea>
+    <textarea id="newTwoot" rows="4" v-model="state.newTwootContent"></textarea>
 
     <div class="create-twoot-panel_submit">
       <div class="create-twoot-type">
         <label for="newTwootType"><strong>Type: </strong></label>
-        <select id="newTwoottype" v-model="selectedTwootType">
+        <select id="newTwoottype" v-model="state.selectedTwootType">
           <option
             :value="option.value"
-            v-for="(option, index) in twootTypes"
+            v-for="(option, index) in state.twootTypes"
             :key="index"
           >
             {{ option.name }}
@@ -28,31 +28,35 @@
 </template>
 
 <script>
+import { reactive, computed } from "vue";
+
 export default {
   name: "CreatetwootPanel",
-  data() {
-    return {
+  setup(props, ctx) {
+    const state = reactive({
       newTwootContent: "",
       selectedTwootType: "instant",
       twootTypes: [
         { value: "draft", name: "Draft" },
         { value: "instant", name: "Instant Twoot" },
       ],
+    });
+
+    const newTwootCharacterCount = computed(() => state.newTwootContent.length);
+
+    function createNewTwoot() {
+      if (state.newTwootContent && state.twootTypes.value !== "draft") {
+        ctx.emit("add-twoot", state.newTwootContent);
+      }
+      state.newTwootContent = "";
+    }
+
+    return {
+      state,
+      newTwootCharacterCount,
+      createNewTwoot
     };
   },
-  computed: {
-    newTwootCharacterCount() {
-      return this.newTwootContent.length;
-    },
-  },
-  methods: {
-      createNewTwoot() {
-          if(this.newTwootContent && this.twootTypes.value !== 'draft') {
-              this.$emit("add-twoot", this.newTwootContent)
-          }
-          this.newTwootContent = ''
-      }
-  }
 };
 </script>
 
@@ -88,8 +92,8 @@ export default {
   }
 
   &.--exceeded {
-      color: red;
-      border-color: red;
+    color: red;
+    border-color: red;
   }
 }
 </style>

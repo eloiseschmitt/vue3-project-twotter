@@ -32,3 +32,17 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ## Dépendances installées pour le tuto:
 - node-sass
 - sass-loader
+
+## Spécifs Vue 3
+- Composition API
+- Import reactive from vue
+- Ajouter setup()
+- Créer un objet (nommé 'state' dans ce projet) reactive
+- return cet objet
+- On se réfère aux data maintenant avec state.leNomDeLaData
+- Pour les f° computed, import computed
+- créer un object computed
+- retourner cet objet
+- les methodes sont maintenant des fonctions basique js retournées également
+- specif pour les $emit (ex:this.$emit("add-twoot", this.newTwootContent);)=> ajouter props et ctx dans les arguments de setup
+- et remplacer le this par ctx et supprimer le $ (ex: ctx.emit("add-twoot", state.newTwootContent))
