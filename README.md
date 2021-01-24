@@ -31,6 +31,34 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - Appeler un fichier de styles de base => creer à la racine un fichier vue.config.js et lui indiquer le chemin du fichier de base (voir fichier en exemple)
 - Supprimer le # dans l'url après l'installation de router => 
 - dans router/index.js, remplacer createWebHashHistory par createWebHistory
+- état router/index.js avant création module:
+```import { createStore } from 'vuex'
+
+export default createStore({
+  state: {
+    user: null
+  },
+
+  // Functions that effect the state.
+  mutations: {
+    SET_USER(state, user) {
+      state.user = user;
+    }
+  },
+
+  // Functions that you call throughout your application that call mutations.
+  actions: {
+    setUser({ commit }, user) {
+      commit('SET_USER', user)
+    }
+  },
+
+  modules: {
+
+  }
+})
+```
+
 
 ## Dépendances installées pour le tuto:
 - node-sass
