@@ -24,6 +24,7 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Notes
+- le tuto utilise l'interface graphique via la commande ```vue ui```
 - type & required peuvent être ajoutés aux properties sous forme d'objet
 - attribut scoped dans la balise style garantit que les classes ne seront utilisées que pour le composant
 -> ajoute "[data-v-unnumero]" à la fin des classes

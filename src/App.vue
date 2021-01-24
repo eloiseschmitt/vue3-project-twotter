@@ -1,32 +1,34 @@
 <template>
   <div id="app">
     <nav>
-      <div class="navigation_logo">Twotter</div>
+      <router-link to="/">
+        <div class="navigation_logo">Twotter</div>
+      </router-link>
+
       <div class="navigation_user">
         {{ state.user.username }}
       </div>
     </nav>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import { reactive} from "vue";
+import { reactive } from "vue";
 
 export default {
   name: "App",
   setup() {
     const state = reactive({
       user: {
-        username: '_titiToto'
-      }
-    })
+        username: "_titiToto",
+      },
+    });
 
     return {
-      state
-    }
-
-  }
+      state,
+    };
+  },
 };
 </script>
 
